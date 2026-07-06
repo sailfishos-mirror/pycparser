@@ -2956,6 +2956,15 @@ class TestCParser_fundamentals(TestCParser_base):
         )
 
 
+class TestUnmatchedRbrace(unittest.TestCase):
+    """Regression for #603: unmatched '}' raises ParseError, not AssertionError."""
+
+    def test_unmatched_rbrace_raises_parse_error(self):
+        parser = c_parser.CParser()
+        with self.assertRaises(ParseError):
+            parser.parse("}", filename="test.c")
+
+
 class TestCParser_whole_code(TestCParser_base):
     """Testing of parsing whole chunks of code.
 
@@ -3778,16 +3787,4 @@ class TestCParser_typenames(TestCParser_base):
 
 
 if __name__ == "__main__":
-    # ~ suite = unittest.TestLoader().loadTestsFromNames(
-    # ~ ['test_c_parser.TestCParser_fundamentals.test_typedef'])
-
-    # ~ unittest.TextTestRunner(verbosity=2).run(suite)
     unittest.main()
-
-class TestUnmatchedRbrace(unittest.TestCase):
-    """Regression for #603: unmatched '}' raises ParseError, not AssertionError."""
-
-    def test_unmatched_rbrace_raises_parse_error(self):
-        parser = c_parser.CParser()
-        with self.assertRaises(ParseError):
-            parser.parse("}", filename="test.c")
